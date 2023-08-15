@@ -1,0 +1,72 @@
+#ALC KB = {
+#	//TBox
+#	Course ⊑ ~Person			T_ex.1		//Course and person are disjoint concepts
+#	UGC ⊑ Course			T_ex.2		//All UGC are courses
+#	PGC ⊑ Course			T_ex.3		//All PGC are courses
+#	Teacher ≡ Person ⨅ ∃teaches.Course	T_ex.4		//Teacher is a person who teaches some course
+#	∃teaches.⊤ ⊑ Person		T_ex.5		//Domain of teaches is Person
+#	Student ≡ Person ⨅ ∃attends.Course	T_ex.6		//Student is a person who attends some course
+#	∃attends.⊤ ⊑ Person		T_ex.7		//Domain of attends is Person
+#
+#	//ABox
+#	Person(Mary)			A_ex.1
+#	Course(CS600)			A_ex.2
+#	(Course ⨅ PGC)(Ph456)		A_ex.3
+#	Person(Hugo)			A_ex.4
+#	Teacher(Betty)			A_ex.5
+#	Teaches(Mary,CS600)		A_ex.6
+#	Teaches(Hugo,Ph456)		A_ex.7
+#	Attends(Betty,Ph456)		A_ex.8
+#	Attends(Mary,Ph456)		A_ex.9
+#}
+
+#P8 - Taxonomy Extraction:
+#Concept		SubClassOf
+#---------------------------------------------------
+#Person
+#Course		~Person
+#UGC		Course
+#PGC		Course
+#Teacher		Person, ∃teaches.Course
+#Student		Person, ∃attends.Course
+
+Class: Person
+
+Class: Course
+	SubClassOf:	not Person
+
+Class: UGC
+	SubClassOf:	Course
+
+Class: PGC
+	SubClassOf:	Course
+
+Class: Teacher
+	EquivalentTo:	Person and teaches some Course
+
+ObjectProperty: teaches
+	Domain: 		Person
+
+Class: Student
+	EquivalentTo:	Person and attends some Course
+
+ObjectProperty: attends
+	Domain: 		Person
+
+Individual: Mary
+	Types:		Person
+	Facts:		teaches CS600, attends Ph456
+
+Individual: CS600
+	Types:		Course
+
+Individual: Ph456
+	Types:		Course, PGC
+
+Individual: Hugo
+	Types:		Person
+	Facts:		teaches Ph456
+
+Individual: Betty
+	Types:		Teacher
+	Facts:		attends Ph456
